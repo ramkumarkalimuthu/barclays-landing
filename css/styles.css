@@ -28,7 +28,7 @@
   --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   /* Layout */
-  --wrap-max: 1180px;
+  --wrap-max: 1300px;
   --radius-sm: 4px;
   --radius-md: 8px;
   --shadow-card: 0 1px 2px rgba(10, 33, 54, 0.06), 0 8px 24px rgba(10, 33, 54, 0.06);
@@ -115,7 +115,7 @@ input, select, textarea { font-family: inherit; font-size: 1rem; }
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--color-line);
 }
@@ -140,12 +140,24 @@ input, select, textarea { font-family: inherit; font-size: 1rem; }
 .main-nav { flex: 1; display: flex; justify-content: center; }
 .nav-list { display: flex; gap: 32px; }
 .nav-list a {
+  position: relative;
   text-decoration: none;
   font-weight: 500;
   font-size: 0.95rem;
   color: var(--color-ink);
+  transition: color 0.15s ease;
 }
-.nav-list a:hover { color: var(--color-accent-dark); }
+.nav-list a:hover,
+.nav-list a[aria-current="location"] { color: var(--color-accent-dark); }
+.nav-list a[aria-current="location"]::after {
+  position: absolute;
+  right: 0;
+  bottom: -8px;
+  left: 0;
+  height: 2px;
+  background: var(--color-accent);
+  content: "";
+}
 .header-cta { white-space: nowrap; }
 
 .nav-toggle {
@@ -180,7 +192,7 @@ input, select, textarea { font-family: inherit; font-size: 1rem; }
 }
 .hero-inner {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-columns: 0.9fr 1.1fr;
   grid-template-areas: "copy visual";
   gap: 56px;
   align-items: center;
@@ -268,7 +280,7 @@ input, select, textarea { font-family: inherit; font-size: 1rem; }
 .section-head h2 { font-size: clamp(1.7rem, 2.4vw, 2.2rem); }
 .section-head p { font-size: 1.05rem; margin: 0; }
 
-.services { padding: 96px 0; background-color: var(--color-paper-raised);}
+.services { padding: 96px 0; background: radial-gradient(1200px 500px at 82% -10%, rgba(0, 145, 199, 0.12), transparent 60%), var(--color-paper);}
 .service-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -364,7 +376,7 @@ input, select, textarea { font-family: inherit; font-size: 1rem; }
 
 .global-banking {
   padding: 88px 0;
-  background: #EAF2F3;
+  background: var(--color-paper-raised);
 }
 .global-inner {
   display: grid;

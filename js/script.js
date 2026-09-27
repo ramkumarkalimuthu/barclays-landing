@@ -93,6 +93,52 @@
     });
   }
 
+  if (primaryNav) {
+    const sectionLinks = Array.from(primaryNav.querySelectorAll('a[href^="#"]'));
+    const trackedSections = sectionLinks.map(function (link) {
+      return {
+        link: link,
+        section: document.querySelector(link.getAttribute("href"))
+      };
+    }).filter(function (item) {
+      return item.section;
+    });
+    trackedSections.sort(function (first, second) {
+      return first.section.compareDocumentPosition(second.section) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
+    });
+
+    function updateActiveNavLink() {
+      const header = document.querySelector(".site-header");
+      const activationLine = header ? header.getBoundingClientRect().bottom + 8 : 8;
+      let activeItem = null;
+
+      trackedSections.forEach(function (item) {
+        if (item.section.getBoundingClientRect().top <= activationLine) activeItem = item;
+      });
+
+      sectionLinks.forEach(function (link) {
+        if (activeItem && link === activeItem.link) {
+          link.setAttribute("aria-current", "location");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+    }
+
+    let navUpdatePending = false;
+    window.addEventListener("scroll", function () {
+      if (navUpdatePending) return;
+      navUpdatePending = true;
+      window.requestAnimationFrame(function () {
+        updateActiveNavLink();
+        navUpdatePending = false;
+      });
+    }, { passive: true });
+    window.addEventListener("resize", updateActiveNavLink);
+    window.addEventListener("load", updateActiveNavLink);
+    updateActiveNavLink();
+  }
+
   /* =========================================================
      Conditional business-type fields
      ========================================================= */
